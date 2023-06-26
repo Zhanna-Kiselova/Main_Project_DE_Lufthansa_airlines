@@ -9,7 +9,7 @@
   Another part of the application will be dedicated to interactive data visualization trough graphs and statistical dashboards. One of the statistics to present is about the airplane crashes. In order to propose 
   maximum security and avoid any type of accidents, it is important to understand the cause of these consequences. This information can be interesting and be destinated to : 
   - passengers/clients to have a quick analysis on companies, which have the least accidents, therefore the safest 
-  - airline companies in order to understand better the problems of these accidents and avoid as much as possible in the future.  
+  - airline companies in order to better understand the problems of these accidents and avoid as much as possible in the future.  
 
 3) The project is a final work and is due on August, 2023:
   After this date, any exterior suggestions or remarks are more than welcome in order to improve the project
