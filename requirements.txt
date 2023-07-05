@@ -1,0 +1,10 @@
+Flask==2.0.1 # latest version 
+pandas==2.0 # latest version released April, 2023 
+matplotlib==3.7.1 # latest version released March, 2023 
+fastapi==0.96.1. # Fixes. Upgrades. Refactors. Docs. Translations. Internal.
+pymong==3.8 # latest stable release 
+os # operating system to run an app by anyone from any localhost
+uvicorn==0.22.0 # latest for Python 3.7+ (For Python 3.6 support, install version 0.16.0.)
+sqlalchemy # in case we use MySQL via python if we add MySQL database 
+mysqlclient # MySQL serveur 
+uvicorn # for launching the fastapi 

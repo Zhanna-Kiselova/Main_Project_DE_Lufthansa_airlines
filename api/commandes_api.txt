@@ -1,0 +1,43 @@
+1) Lancement application : 
+    CURL: curl -X GET localhost:8000/
+    REQUEST URL : http://127.0.0.1:8000/
+    OUTPUT : "This is an application for a survey form using an API. Please enter your credentials (your user and your password) in the bar search in the following way: /{user}/{password}. The verification is required in order to take a survey."(ls)
+
+
+2) Identification d'utilisateur : 
+    CURL: curl -X GET localhost:8000/clementine/mandarine
+    REQUEST URL : http://127.0.0.1:8000/clementine/mandarine
+    OUTPUT : "Clementine, your credentials are identified. Authorization successful. After your credentials in the bar search, please use this route : /{use}/{subject}/{number} where you have to enter one test type (Test de positionnement, Test de validation, Total Bootcamp) instead of {use}, one or more subjects ('BDD','Systèmes distribués','Streaming de données','Docker','Classification','Data Science','Machine Learning','Automation') instead of {subject}, and at the end one out of 3 possible numbers of quesions 5, 10 or 20."(ls)
+
+    CURL: curl -X GET localhost:8000/clementine/confiture
+    REQUEST URL : http://127.0.0.1:8000/clementine/confiture
+    OUTPUT : "Your credentials are not correct"
+
+
+3) Obtention des questions : 
+    CURL : curl -X GET localhost:8000/bob/builder/Test%20de%20positionnement/BDD,Docker/5
+    REQUEST URL : http://localhost:8000/bob/builder/Test%20de%20positionnement/BDD,Docker/5
+    OUTPUT : [{"question":"A quoi faire attention lorsqu'on choisit un système de base de données ?","subject":"BDD","use":"Test de positionnement","correct":"D","responseA":"La définition d'un schéma","responseB":"La rapidité de lecture/écriture","responseC":"La différenciation des accés","responseD":"Tous ces points"},{"question":"Docker est utilisé","subject":"Docker","use":"Test de positionnement","correct":"A","responseA":"pour développer rapidement et mettre en production facilement","responseB":"pour améliorer les capacités d'une base de données","responseC":"pour améliorer la puissance de calcul"},{"question":"Docker-compose est ","subject":"Docker","use":"Test de positionnement","correct":"A","responseA":"un système qui permet de lancer plusieurs containers d'un coup","responseB":"un système d'orchestration de containers","responseC":"un répertoire d'images Docker"},{"question":"Cassandra et HBase sont des bases de données","subject":"BDD","use":"Test de positionnement","correct":"C","responseA":"relationnelles","responseB":"orientées objet","responseC":"orientées colonne","responseD":"orientées graphe"},{"question":"Des containers Docker peuvent communiquer entre eux grâce à","subject":"Docker","use":"Test de positionnement","correct":"B","responseA":"des volumes","responseB":"des networks","responseC":"des communications "}](ls)
+
+    CURL : curl -X GET localhost:8000/alice/wonderland/Test%20de%20validation/Classification,Automation/19
+    REQUEST URL : http://localhost:8000/alice/wonderland/Test%20de%20validation/Classification,Automation/19
+    OUTPUT : {"detail":"Invalid number of questions. Choose among 5, 10 or 20."}(ls)
+
+    CURl : curl -X GET localhost:8000/clementine/mandarine/Total%20Bootcamp/Data%20Science/10
+    REQUEST URL : http://localhost:8000/clementine/mandarine/Total%20Bootcamp/Data%20Science/10
+    OUTPUT : {"detail":"Not enough questions available for this category and use. Or verify if the subject is in the list. For information : Test de positionnement :['BDD', 'Systèmes distribués', 'Streaming de données', 'Docker'], Test de validation : ['Classification', 'Systèmes distribués', 'Automation','Streaming de données'], Total Bootcamp : ['Data Science', 'Machine Learning'] "}(ls) 
+
+    CURl : curl -X GET localhost:8000/clementine/mandarine/Total%20Bootcamp/coucou/5
+    REQUEST URL : http://localhost:8000/clementine/mandarine/Total%20Bootcamp/coucou/5
+    OUTPUT : {"detail":"Not enough questions available for this category and use. Or verify if the subject is in the list. For information : Test de positionnement :['BDD', 'Systèmes distribués', 'Streaming de données', 'Docker'], Test de validation : ['Classification', 'Systèmes distribués', 'Automation','Streaming de données'], Total Bootcamp : ['Data Science', 'Machine Learning'] "}(ls) 
+
+
+4) Pout ajouter une question par admin : 
+
+    CURl : curl -X POST -H "Content-Type: application/json" -d '{"question": "Quel métier demande des connaissances profondes sur une architecture des données?", "subject": "Data Science", "correct": "C", "use": "Total Bootcamp", "responseA": "Data Analyst", "responseB": "Data Scientist","responseC": "Data Engineer", "responseD": "Tous"}' http://localhost:8000/question/admin/4dm1N
+    REQUEST URL : NA
+    OUTPUT : ["Question has been added successfully"]
+ 
+    CURl : curl -X POST -H "Content-Type: application/json" -d '{"question": "Quel métier demande des connaissances profondes sur une architecture des données?", "subject": "Data Science", "correct": "C", "use": "Total Bootcamp", "responseA": "Data Analyst", "responseB": "Data Scientist","responseC": "Data Engineer", "responseD": "Tous"}' http://localhost:8000/question/admin/4dm1
+    REQUEST URL : NA
+    OUTPUT : {"detail":"Access denied"}
