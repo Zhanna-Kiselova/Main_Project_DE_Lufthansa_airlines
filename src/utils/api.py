@@ -1,33 +1,14 @@
-"""
-# Nous installons les packages avec lesquelles on va travailler
-!pip install dash
-!pip install pandas # nous installons pandas car cette librarie a besoin d'utiliser plotly.express qui est nécessaire pour dash
-!pip install plotly
-!pip install dash
-!pip install dash_renderer
-!pip install dash_html_components
-!pip install pandas_datareader
-!pip install cufflinks
-!pip install folium
-!pip install basemap
-!pip install --upgrade pip wheel setuptools requests
-"""
 
 # Imports des librairies nécessaires
 import requests
+import os # to launch easily from another localhost
 from requests import post, get
 import pandas as pd
 from time import sleep, time
 from datetime import datetime
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-import dash
-from dash import dcc
-from dash import html
-import plotly.express as px
 import sys # to check the version of python
-import matplotlib.pyplot as plt
-import numpy as np
 import json
 
 # Génération d'un nouveau token par Python (notre client_id et client_secret nous ont été communiqués lors de l'inscription sur le site lufthansa.com. Ces identifiants sont confidentiels et uniques à chaque utilisateur
