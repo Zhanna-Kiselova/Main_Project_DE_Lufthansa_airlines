@@ -1,5 +1,6 @@
 from dash import dcc, html, callback, Input, Output
 import plotly.graph_objects as go
+import pandas as pd
 
 # local imports
 from ..utils.helpers import get_flight_airlabs_api, generate_table, get_flight_airlabs_mongo_db
@@ -50,11 +51,13 @@ def update_graph(dropdown_value):
         filtered_df = flight_airlabs[flight_airlabs['Airline_iata']
                                      == dropdown_value]
     fig = go.Figure()
+    filtered_df['combined']= list(zip(filtered_df['Status'], filtered_df['Updated']))
     hovertemplate = """
     <b>%{text}</b><br>
     Latitude: %{lat:.2f}<br>
     Longitude: %{lon:.2f}<br>
-    Status: %{customdata}
+    Status: %{customdata[0]}<br>
+    Upadted: %{customdata[1]}
     <extra></extra>
     """
     fig.add_trace(
@@ -68,7 +71,7 @@ def update_graph(dropdown_value):
 
             ),
             text=filtered_df['Flight_iata'],
-            customdata=filtered_df['Status'],
+            customdata=filtered_df['combined'],
             hovertemplate=hovertemplate
         )
     )
