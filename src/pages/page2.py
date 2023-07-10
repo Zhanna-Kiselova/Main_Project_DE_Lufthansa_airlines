@@ -77,13 +77,13 @@ pie_chart.update_layout(
 
 layout_page2 = html.Div([
     html.Button("Update Map", id="wheather-update-btn", n_clicks=0),
-    dcc.Loading(
-        id="loading",
-        type="default",
-        children=dcc.Graph(
+    dcc.Graph(
             id='wheather-map',  # id to be called in callback in Input and Output
             figure=wheather_map  # property to be called in callback in Input and Output
         ),
+    dcc.Loading(
+        id="loading",
+        type="default",
     ),
     dcc.Graph(
         figure=accidents_fig
@@ -95,7 +95,8 @@ layout_page2 = html.Div([
 
 
 @callback(
-    Output('loading', 'children'),
+    [Output('wheather-map', 'figure'),
+     Output('loading', 'children')],
     Input('wheather-update-btn', 'n_clicks')
 )
 def update_wheather_data(n_clicks):
@@ -117,9 +118,6 @@ def update_wheather_data(n_clicks):
             )
         )
 
-        return dcc.Graph(
-            id='wheather-map',  # id to be called in callback in Input and Output
-            figure=wheather_map  # property to be called in callback in Input and Output
-        ),
+        return [wheather_map, html.Div(None)]
     else:
         raise dash.exceptions.PreventUpdate

@@ -1,4 +1,5 @@
-venv 
+virtual_env
 # virtual environment with python librarires installed that we need for the project  
 .env 
 # environment for sensitive data (api keys, environmental variables) 
+

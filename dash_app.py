@@ -20,7 +20,9 @@ header_section = html.Div([
             'color': 'mediumturquoise', 'textAlign': 'center'}),
     html.Br(),
     html.Button(dcc.Link('Weather alerts and global aviation statistics',
-                         href='/weather-data'))
+                         href='/weather-data')),
+    dcc.Link('Aviation Stats',
+                         href='https://aviation-safety.net/database/2022-analysis')
 ], style={'display': 'flex',
           'flexDirection': 'column',
           'alignItems': 'center',
@@ -53,4 +55,4 @@ def display_page(pathname):
 
 # to launch with Flask
 if __name__ == '__main__':
-    app.run_server(debug=True, host='0.0.0.0', port=8050)
+    app.run_server(debug=True, host='localhost', port=8050)

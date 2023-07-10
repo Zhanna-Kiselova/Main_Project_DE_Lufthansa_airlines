@@ -1,12 +1,12 @@
 from dash import html, dash_table
 import os
 import pandas as pd
-from requests import get
+from requests import get, put
+import json
 
 # local import
 
-from .settings import API_KEY_WEATHER
-from .mongo_database import get_airlabs_data, insert_airlabs_data
+from .settings import API_KEY_WEATHER, AIRLABS_API_KEY
 
 cwd = os.getcwd()
 
@@ -67,7 +67,10 @@ def get_flight_airlabs_mongo_db():
     # airlabs dataset
     # flight_airlabs = pd.read_csv(
     #     '/home/ubuntu/Main_Project_DE_Lufthansa_airlines/fichiers_csv/flights_airlabs_12792.csv', delimiter=',')
-    flight_airlabs = get_airlabs_data()
+    flight_airlabs = get("http://localhost:8000/get_airlabs_data")
+    flight_airlabs = flight_airlabs.json()
+    flight_airlabs = json.loads(flight_airlabs)
+    flight_airlabs = pd.DataFrame(flight_airlabs)
     return flight_airlabs
 
 
@@ -127,7 +130,8 @@ def get_city_weather_api():
 def get_flight_airlabs_api():
     # return flight_airlabs
     try:
-        flight_airlabs = get(f"http://0.0.0.0:8000/get_airlabs_data")
+        flight_airlabs = get(f"https://airlabs.co/api/v9/flights?api_key={AIRLABS_API_KEY}")
+        flight_airlabs = flight_airlabs.json()
         flight_airlabs = pd.DataFrame([[flight.get('reg_number'),
                             flight.get("flag"),
                             flight.get("lat"),
@@ -149,8 +153,10 @@ def get_flight_airlabs_api():
                             flight.get("status")] for flight in flight_airlabs["response"]],
                             columns=['Registration_number', 'Flag', 'Latitude', 'Longitude', 'Altitude', 'Direction', 'Speed', 'Flight_number', 'Flight_icao', 'Flight_iata',
                                     'Departure_icao', 'Departure_iata', 'Arrival_icao', 'Arrival_iata', 'Airline_icao', 'Airline_iata', 'Aircraft_icao', 'Updated', 'Status',])
-        print(flight_airlabs)
-        insert_airlabs_data(flight_airlabs)
+        flight_airlabs_json = flight_airlabs.to_json(orient="records")
+        payload = {'data' : flight_airlabs_json}
+        response = put("http://localhost:8000/insert_airlabs_data", json=payload)
+        print(response)
     except:
         flight_airlabs = get_flight_airlabs_mongo_db()
     return flight_airlabs

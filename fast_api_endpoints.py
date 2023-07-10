@@ -5,13 +5,10 @@ import pandas as pd
 import os
 from dotenv import load_dotenv # pip install python-dotenv to be installed in the terminal 
 from fastapi.responses import JSONResponse
+import json
 
-cwd = os.getcwd()
-dotenv_path = os.path.join(cwd, os.getenv('ENVIRONMENT_FILE', '.env'))
-load_dotenv(dotenv_path=dotenv_path, override=True)
+from mongo_database import insert_airlabs_data, get_airlabs_data
 
-AIRLABS_API_KEY = os.environ.get('api_key_airlabs')
-API_KEY_WEATHER = os.environ.get('api_key_weather')
 
 
 api=FastAPI()
@@ -20,12 +17,20 @@ api=FastAPI()
 def get_index():
     return 'welcome' 
 
+@api.put("/insert_airlabs_data")
+def insert_airlabs(dataframe: dict):
+    data = dataframe['data']
+    data = json.loads(data)
+    df = pd.DataFrame(data)
+    insert_airlabs_data(df)
+    return {"message" : "data inserted"}
+
 @api.get("/get_airlabs_data")
-def get_flight_airlabs_data():
-    flight_airlabs = get(f"https://airlabs.co/api/v9/flights?api_key={AIRLABS_API_KEY}")
-    flight_airlabs = flight_airlabs.json()
-    return flight_airlabs
+def get_airlabs():
+    records = get_airlabs_data()
+    records = list(records)
+    return json.dumps(records, default=str)
 
 
 if __name__ == "__main__":
-    uvicorn.run(api, host="0.0.0.0", port=8000)
+    uvicorn.run(api, host="localhost", port=8000)
