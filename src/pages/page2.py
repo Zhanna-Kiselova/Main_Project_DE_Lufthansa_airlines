@@ -4,17 +4,20 @@ import plotly.graph_objects as go
 import plotly.express as px
 import pandas as pd
 # local imports
-from ..utils.helpers import get_accidents_csv, get_city_weather_csv, get_city_weather_api
+from ..utils.helpers import get_accidents_mongo_db, get_df_weather_mongo_db, get_city_weather_api
 
+# Getting data from fastapi endpoint for dash  
+city_weather_visualcrossing = get_df_weather_mongo_db()
+if city_weather_visualcrossing.empty:
+    city_weather_visualcrossing = get_city_weather_api()
 
-city_weather_visualcrossing = get_city_weather_csv()
-accidents_depuis_1948 = get_accidents_csv()
+accidents_depuis_1948 = get_accidents_mongo_db()
 
 # Page 2
 # website to adapt the color for the coloscale of a bar in the heat map : https://plotly.com/python/colorscales/
 wheather_map = px.density_mapbox(city_weather_visualcrossing, lat='Latitude', lon='Longitude', z='Alert risk', radius=10,
                                  center=dict(lat=0, lon=180), zoom=0,
-                                 hover_data=['Alert risk', 'City', 'Current temperature', 'Date', 'Current time',
+                                 hover_data=['Alert risk', 'City', 'Timezone','Current temperature', 'Date', 'Current time',
                                              'Description', 'Solar radiation', 'Weather conditions', 'Weather alerts'],
                                  mapbox_style="carto-positron",
                                  color_continuous_scale="mint"  # gnbu # greys #gray # deep #teal # pubugn # mint

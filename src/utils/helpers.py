@@ -1,24 +1,24 @@
-from dash import html, dash_table
-import os
-import pandas as pd
-from requests import get, put
-import json
+from dash import html, dash_table  # ???????????????????? putting dash div to dash document 
+import os # to find the files easiers in the subfiles type folder
+import pandas as pd # for dataframe 
+from requests import get, put # for getting info from the websites via API 
+import json # for transferring into a dictionnary .json (accepted for mongodb)
+from datetime import datetime 
 
 # local import
-
 from .settings import API_KEY_WEATHER, AIRLABS_API_KEY
 
-cwd = os.getcwd()
+cwd = os.getcwd() # varibale for defining the current working directory 
 
-
+# Function to generate a table in Dash, defining the structure (1st page)
 def generate_table(df):
-    datatable = html.Div([
+    datatable = html.Div([  # defining name section "datatable" for the table in Dash
         dash_table.DataTable(
             id='datatable-interactivity',
             columns=[
                 {"name": i, "id": i, "deletable": False, "selectable": True} for i in df.columns
             ],
-            data=df.to_dict('records'),
+            data=df.to_dict('records'), # ???????????????????, (data, df, records)
             page_current=0,
             page_size=6,
             style_table={
@@ -48,37 +48,46 @@ def generate_table(df):
 
     return datatable
 
+# 
+def get_accidents_mongo_db():
+    df_accidents = get("http://localhost:8000/get_accidents_data")
+    df_accidents = df_accidents.json()
+    df_accidents = json.loads(df_accidents)
+    df_accidents = pd.DataFrame(df_accidents)
+    return df_accidents
 
-def get_accidents_csv():
-    file_path = os.path.join(cwd, 'fichiers_csv', "accidents_kaggle.csv")
-    accidents_depuis_1948 = pd.read_csv(file_path)
-    return accidents_depuis_1948
 
-
-def get_city_weather_csv():
-    file_path = os.path.join(
-        cwd, 'fichiers_csv', "city_weather_visualcrossing.csv")
-    city_weather_visualcrossing = pd.read_csv(file_path)
-    return city_weather_visualcrossing
+# Asking data for weather from fastapi which took from mongodb
+def get_df_weather_mongo_db():
+    df_weather = get("http://localhost:8000/get_weather_data")
+    df_weather = df_weather.json()
+    df_weather = json.loads(df_weather)
+    df_weather = pd.DataFrame(df_weather)
+    return df_weather
 
 
 def get_flight_airlabs_mongo_db():
-    # file_path = os.path.join(cwd, 'fichiers_csv', "flights_airlabs_12792.csv")
-    # airlabs dataset
-    # flight_airlabs = pd.read_csv(
-    #     '/home/ubuntu/Main_Project_DE_Lufthansa_airlines/fichiers_csv/flights_airlabs_12792.csv', delimiter=',')
-    flight_airlabs = get("http://localhost:8000/get_airlabs_data")
+    flight_airlabs = get("http://localhost:8000/get_flights_data")
     flight_airlabs = flight_airlabs.json()
     flight_airlabs = json.loads(flight_airlabs)
     flight_airlabs = pd.DataFrame(flight_airlabs)
     return flight_airlabs
 
 
-def get_city_weather_api():
-    file_path = os.path.join(
-        cwd, 'fichiers_csv', "airports_lufthansa_11108.csv")
-    airports_lufthansa = pd.read_csv(file_path)
-    cities = airports_lufthansa['Nom Ville'].unique()
+def get_airports_mongo_db():
+    airports = get("http://localhost:8000/get_airports_data")
+    airports = airports.json()
+    airports = json.loads(airports)
+    airports = pd.DataFrame(airports)
+    return airports
+
+
+
+
+# Here below the functions to get the real-time data from API of visualcrossing website 
+def get_city_weather_api(): 
+    airports_lufthansa = get_airports_mongo_db()
+    cities = airports_lufthansa['City Name'].unique()
     df_weather= pd.DataFrame(columns = ['City', 'Description jour', 'Timezone', 'Latitude', 'Longitude', 'Date', 'Current time', 'Max_Température', 'Min_Température', 'Current temperature',
                                             'Humidité','Precipitation', 'Neige', 'Neige_densité', 'Vent_rafale', 'Vent_vitesse','Vent_direction', 'Pression', 'Nuage', 'Visibilité',
                                             'Solar radiation','Energy_solaire', 'Soleil_coucher', 'Alert risk','Description', 'Weather conditions', 'Weather alerts',
@@ -86,7 +95,7 @@ def get_city_weather_api():
     c = 0
     for city_name in cities:
         if city_name == None: continue
-        url= f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{city_name.split('/')[0]}?unitGroup=metric&key={API_KEY_WEATHER}&contentType=json"
+        url= f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{city_name}?unitGroup=metric&key={API_KEY_WEATHER}&contentType=json"
         resp2 = get(url)
         if resp2.status_code != 200:
             continue
@@ -94,6 +103,7 @@ def get_city_weather_api():
         c += 1
         if c%10 == 0: print(c)
         # try:
+        print(visual)
         row = pd.DataFrame({'City': [visual['resolvedAddress']],
                             'Description jour': visual['description'],
                             'Timezone': visual['timezone'],
@@ -122,8 +132,17 @@ def get_city_weather_api():
                             'Weather alertes': visual['alerts'][0]['event'] if visual["alerts"] else None,
                             'Alertes_description': visual['alerts'][0]['description'] if visual["alerts"] else None,
                             'Vitesse_vent': visual['days'][0]['windspeed']})
+        print(row)
         df_weather = pd.concat([df_weather, row], ignore_index=True)
-    df_weather.to_csv("city_weather_visualcrossing", index=False)
+    print(df_weather)
+    # return df_weather
+    try:
+        df_weather_json = df_weather.to_json(orient="records")
+        payload = {'data' : df_weather_json}
+        response = put("http://localhost:8000/insert_weather_data", json=payload)
+        print(response)
+    except:
+        df_weather = get_df_weather_mongo_db()
     return df_weather
 
 
@@ -153,10 +172,16 @@ def get_flight_airlabs_api():
                             flight.get("status")] for flight in flight_airlabs["response"]],
                             columns=['Registration_number', 'Flag', 'Latitude', 'Longitude', 'Altitude', 'Direction', 'Speed', 'Flight_number', 'Flight_icao', 'Flight_iata',
                                     'Departure_icao', 'Departure_iata', 'Arrival_icao', 'Arrival_iata', 'Airline_icao', 'Airline_iata', 'Aircraft_icao', 'Updated', 'Status',])
+        flight_airlabs['Updated'] = flight_airlabs['Updated'].apply(lambda x: datetime.fromtimestamp(x).strftime('%Y-%m-%d %H:%M:%S')) # https://www.epochconverter.com/ to convert timestamp into human date
+        #flight_airlabs['Updated'] = pd.to_numeric(flight_airlabs['Updated'], errors='coerce', downcast='integer')
+        #flight_airlabs['Updated_seconds'] = flight_airlabs['Updated'] / 1e9  # Convert nanoseconds to seconds
+        #flight_airlabs['Updated_seconds'] = flight_airlabs['Updated_seconds'].round(2)  # Round to two decimal places
         flight_airlabs_json = flight_airlabs.to_json(orient="records")
         payload = {'data' : flight_airlabs_json}
         response = put("http://localhost:8000/insert_airlabs_data", json=payload)
         print(response)
     except:
         flight_airlabs = get_flight_airlabs_mongo_db()
+        flight_airlabs['Updated'] = flight_airlabs['Updated'].apply(lambda x: datetime.fromtimestamp(x).strftime('%Y-%m-%d %H:%M:%S'))
+
     return flight_airlabs

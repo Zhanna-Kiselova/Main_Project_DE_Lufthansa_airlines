@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"uri": "vscode-remote://wsl+ubuntu/home/ubuntu"
+		},
+		{
+			"name": "Main_Project_DE_Lufthansa_airlines",
+			"uri": "vscode-remote://wsl+ubuntu/home/ubuntu/Main_Project_DE_Lufthansa_airlines"
+		}
+	],
+	"remoteAuthority": "wsl+ubuntu",
+	"settings": {}
+}

@@ -3,7 +3,7 @@ import plotly.graph_objects as go
 import pandas as pd
 
 # local imports
-from ..utils.helpers import get_flight_airlabs_api, generate_table, get_flight_airlabs_mongo_db
+from ..utils.helpers import get_flight_airlabs_api, generate_table
 from ..utils.settings import API_KEY_MAPBOX
 
 flight_airlabs = get_flight_airlabs_api()
@@ -57,7 +57,7 @@ def update_graph(dropdown_value):
     Latitude: %{lat:.2f}<br>
     Longitude: %{lon:.2f}<br>
     Status: %{customdata[0]}<br>
-    Upadted: %{customdata[1]}
+    Updated: %{customdata[1]} 
     <extra></extra>
     """
     fig.add_trace(
@@ -84,6 +84,6 @@ def update_graph(dropdown_value):
     )
 
     columns = ["Departure_iata", "Arrival_iata", "Flight_iata", "Airline_iata", "Flag",
-               "Aircraft_icao", "Status"]
+               "Aircraft_icao", "Updated", "Status"]
     filtered_df = filtered_df[columns]
     return [fig, generate_table(filtered_df)]

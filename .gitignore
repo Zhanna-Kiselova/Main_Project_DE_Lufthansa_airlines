@@ -1,5 +1,6 @@
+# .gitignore folder will ignore these folders from sending to Github
 virtual_env
-# virtual environment with python librarires installed that we need for the project  
+# virtual environment with python librarires installed that we need for the project. 
 .env 
-# environment for sensitive data (api keys, environmental variables) 
+# environment for sensitive data (api keys, environmental variables). 
 
