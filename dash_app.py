@@ -44,8 +44,8 @@ app.layout = html.Div([
 ])
 
 # Index update
-@app.callback(Output('page-content', 'children'),  # id to be called in callback in Input and Output
-              [Input('url', 'pathname')])  # property to be called in callback in Input and Output
+@app.callback(Output('page-content', 'children'),
+              [Input('url', 'pathname')])  
 def display_page(pathname):
     if pathname == '/weather-data':
         return layout_page2

@@ -17,7 +17,7 @@ client = MongoClient(
 # Creating a mongo database "lufthansa_database"
 db = client["lufthansa_database"]
 
-# Creating 6 collections to a mongo database "lufthansa_database"
+# Creating 9 collections to a mongo database "lufthansa_database"
 airlabs_flights = db["airlabs_flights"]
 visualcrossing_weather = db["visualcrossing_weather"]
 lufthansa_schedule = db["lufthansa_schedule"]
@@ -28,7 +28,7 @@ aircrafts_wikipedia = db["aircrafts_wikipedia"]
 accidents_kaggle = db["accidents_kaggle"]
 aircrafts = db["crashes_kaggle"]
 
-# BEFORE 
+# PROPOSITION BEFORE THEN CHANGED FOR FASTAPI ENDPOINTS INSERTION FUNCTIONS
 """ 
 # Inserting real-time flights data into mongodb by deleting the previous one
 def insert_airlabs_data(df):
@@ -42,6 +42,7 @@ def insert_weather_data(df):
     visualcrossing_weather.delete_many({})
     visualcrossing_weather.insert_many(df_dict)
 
+# DONE BEFORE AND ONCE 
 # Inserting airports data into mongodb from lufthansa_schedule.csv
 def insert_schedule_data(df):
     lufthansa_schedule_dict = airports_lufthansa.to_dict(orient = 'records')

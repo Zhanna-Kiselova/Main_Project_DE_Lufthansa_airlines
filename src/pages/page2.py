@@ -6,10 +6,10 @@ import pandas as pd
 # local imports
 from ..utils.helpers import get_accidents_mongo_db, get_df_weather_mongo_db, get_city_weather_api
 
-# Getting data from fastapi endpoint for dash  
+# Getting data from fastapi endpoint for dash in helpers.py
 city_weather_visualcrossing = get_df_weather_mongo_db()
-if city_weather_visualcrossing.empty:
-    city_weather_visualcrossing = get_city_weather_api()
+# if city_weather_visualcrossing.empty:
+#     city_weather_visualcrossing = get_city_weather_api()
 
 accidents_depuis_1948 = get_accidents_mongo_db()
 
@@ -56,6 +56,27 @@ accidents_fig.update_layout(
         xref="paper"
     )
 )
+
+airlines_filtered = accidents_depuis_1948[accidents_depuis_1948['Air.carrier'].isin(['Air France', 'Lufthansa', 'Air Canada', 'American Airlines', 'United Airlines', 'British Airways',
+                                                                                    'Japan Airlines', 'Ethiopian Airlines', 'Saudi Arabian Airlines', 'Ryanair', 'China Eastern Airlines', 'Mexicana Airlines', 'Royal Air Maroc', 'Air India', 'Malaysia Airlines'])]
+airlines_filtered_grouped = airlines_filtered.groupby(
+    'Air.carrier')['Air.carrier'].count().reset_index(name="air-carrier-count")
+
+pie_chart = go.Figure([
+    go.Pie(labels=airlines_filtered_grouped['Air.carrier'], values=airlines_filtered_grouped['air-carrier-count'],
+           textinfo='label',
+           insidetextorientation='radial')
+
+])
+pie_chart.update_layout(
+    title=dict(
+        text="Air crashes by air carrier 1948-2022 (source : Kaggle)",
+        font=dict(size=24),
+        x=0.5,
+        xref="paper"
+    )
+)
+
 
 airlines_filtered = accidents_depuis_1948[accidents_depuis_1948['Air.carrier'].isin(['Air France', 'Lufthansa', 'Air Canada', 'American Airlines', 'United Airlines', 'British Airways',
                                                                                     'Japan Airlines', 'Ethiopian Airlines', 'Saudi Arabian Airlines', 'Ryanair', 'China Eastern Airlines', 'Mexicana Airlines', 'Royal Air Maroc', 'Air India', 'Malaysia Airlines'])]
