@@ -1,4 +1,4 @@
-Main Project : "DST Lufthansa Airlines" 
+# Main Project : "DST Lufthansa Airlines" 
 
 Project summary : 
 
@@ -37,7 +37,11 @@ Be sure, to verify the necessary packages installation before launching the appl
 
 
 
-Projet Fil Rouge "DST Lufthansa Airlines".
+
+
+
+
+# Projet Fil Rouge "DST Lufthansa Airlines".
 
 ## 1. Introduction :
 
