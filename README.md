@@ -1,17 +1,36 @@
-Main Project : DST Lufthansa Airlines 
+Main Project : "DST Lufthansa Airlines" 
 
-Project summary : The main project as a result and final work of the data engineering learning program with the objective to expose the real-time international passenger flights of the Lufthansa group on an interactive map. Personal ideas are welcome and the application will propose some useful information about the current local weather as well as severe weather alerts worldwide in order to anticipate the planes flying over the dangerous zones, therefore avoiding or decreasing possible plane accidents.
+Project summary : 
 
-Utility of the project : Another part of the application will be dedicated to interactive data visualization through graphs and statistical dashboards. One of the statistics to present is about the airplane crashes. In order to propose maximum security and avoid any type of accidents, it is important to understand the cause of these consequences. This information can be interesting and be destinated to :
+The main project as a result and final work of the data engineering learning program with the objective to expose the real-time international passenger flights on an interactive map. 
+
+Utility of the project :
+
+Personal ideas are welcome and the application also proposes some useful information about the current local weather as well as severe weather alerts worldwide in order to anticipate the planes flying over the dangerous zones, therefore avoiding or decreasing possible plane accidents.
+Another part of the application will be dedicated to interactive data visualization through graphs and statistical dashboards. One of the statistics to present is about the airplane crashes. In order to propose maximum security and avoid any type of accidents, it is important to understand the cause of these consequences. This information can be interesting and be destinated to :
 
 - passengers/clients to have a quick analysis on companies, which have the least/the most number of accidents and their analyse the causes 
 - airline companies in order to better understand the problems of these accidents and take decisions for improvement.
 
 Any exterior suggestions or remarks are more than welcome in order to improve this project. For any help or contact, don't hesitate to get in touch. 
 
-This project can be cloned and run with docker-compose up in a terminal and can be visualized in the browser : http://localhost:8051
+This project can be cloned and run with docker-compose up in a terminal and can be visualized in the browser : 
 
-This application is developped by @IToubol & @Zhanna-Kiselova. 
+- http://localhost:8050 (for Dash)
+- http://localhost:8030 (for Fastapi)
+
+Necessary requirements: 
+
+For confidential purposes the personal credentials like token, passwords and the API_keys have not been disclosed. Therefore, you'll need to create your own accounts for :
+
+- https://airlabs.co/
+- https://www.visualcrossing.com/
+- https://www.mapbox.com/maps 
+- https://www.mongodb.com/
+
+Please, note that due to a large volume of real-time data, the system imposes limitations and restrictions either in terms of API calls from extériour sites or in process running, resulting in slower outcome or difficulties to manage real-time big data. Because of limited resources, alternative options could not be considered. 
+
+Be sure, to verify the necessary packages installation before launching the application. 
 
 (Data Engineer course : promotion July, 2023/"Datascientest" learning center)
 
@@ -28,7 +47,6 @@ Notre objectif est de s’y approcher le plus possible en passant par des API de
 
 Pour personnaliser le projet et d'en tirer l'utilité, nous avons étudié différentes problématiques et nous avons défini un besoin réel. Il a été décidé de mettre les enjeux, telles que la sécurité du client/passager et la qualité du service proposé, au coeur de notre projet. Pour cela, nous avons opté pour les options d'analyses complémentaires, essentielles pour n'importe quelle compagnie aérienne grâce aux différentes API sollicitées telles que les alertes météo extrême pour la sécurisation des vols, statistiques sur les accidents aériens pour déterminer leur cause et permettre aux compagnies aériennes de faire les analyses nécessaires pour réduire au maximum les causes d'accidents et préserver les vies mais aussi d'éviter les possibles litiges et les frais liés à ces accidents pour pouvoir préserver également leur image etc.
 
-Ce projet est développé par Israel Toubol et Zhanna Kiselova (promo août, 2023 du cursus Data Engineer, format continu. Formation proposée par "Datascientest").
 
 ## 2. Data :
 
@@ -77,7 +95,7 @@ Pour qu'une API soit autorisée, nous aurons besoin de générer un token (autho
 Token est un code généré par le système API qui nous autorise de récupérer les informations qui ne sont pas "open-source".
 Il y a plusieurs possibilités pour l'obtenir:
 
-- via la commande curl/invité de commandes: curl "https://api.lufthansa.com/v1/oauth/token" -X POST -d "client_id=69chxjbxs3mwe34sgn5hmm62" -d "client_secret=28QCGV8TjyuuMbctgvrJ" -d "grant_type=client_credentials"
+- via la commande curl/invité de commandes: curl "https://api.lufthansa.com/v1/oauth/token" -X POST -d "client_id=MY_ID" -d "client_secret=28QCGV8TjyuuMbctgvrJ" -d "grant_type=client_credentials"
 - via Python : par la methode post ou get
 
 Token a une durée limitée de 36h pour le site https://developer.lufthansa.com/page.
@@ -141,13 +159,28 @@ Ce dérèglement climatique qui multiplie ces turbulences en avion qui ont augme
 
 ## 5. Conclusion :
 
-Initialement, notre équipe constituée de 4 personnes a finalement été réduite à 2, suite au départ de gens déjà expériementés dans le domaine de la data. Les personnes restantes, tous les deux en reconversion professionnelle ont eu des difficultés pour comprendre la mise en place de tous les étapes pour le suivi de ce projet. Par manque de temps et des pratiques informatiques ainsi que de l'expérience dans la programmation, notre projet s'est limité aux options assez simples. Cela ne nous empêchera pas de les développer plus tard et de proposer une rendue plus sophistiquée.
+Proposition de l'application développée pourrait donner une idée pour l'élaboration plus sophistiquée. Cela pourrait être utile pour les individus (consultation personnelle) ainsi que pour les compagnies aériennes. Elle pourrait permettre de se concentrer sur les vols en temps réel et vérifier leurs statuts et les données complémentaires concernant chaque vol ainsi que les alertes météo le jour-J. 
 
-## 6. Références et Remerciements :
+Quelques idées pour aller plus loin et pour rendre cette solution plus intéressante :
 
-Le projet a été conçu suite à la formation de data engineer proposée par "Datascientest". Il a été encadré par Mage Merceron (coach de projet) et Anthony Jaillet (coach de cohorte) que nous tenons à remercier sans oublier toute l'équipe de "Datascientest". 
+- On pourrait pousser plus avant une étude sur le taux de remplissages des avions en vue d'optimiser la rentabilité et de réduire l'impact environnemental
+- Il faudrait analyser de façon plus approfondie les causes des différents accidents aériens en tenant compte du plus grand nombre de facteurs pertinents afin de déterminer les mesures sécuritaires à prendre à l'avenir 
+- Ce projet pourrait alors être un premier pas dans l'élaboration d'un projet collaboratif plus pointu en relation avec le développement durable et sécure
+- On pourrait proposer des algorithmes de ML sur le comportement humain et prédictions d'erreurs
+- Il serait intéressant de récupérer les alertes météo néfastes qui peuvent impacter la sécurité des vols (tremblement de terre, éruption de volcan, tsunami et ouragan en cas d'attérisage, tornades, foudre, etc).
 
-Paris
+D'un point de vue plus technique:
+
+- Nous pourrions mettre au point un système d'automatisation (avec Airflow, par exemple) qui permettrait de mettre à jour régulièrement les  données non-statiques car un grand volume des données météo et des vols du jour demande un temps d'exécution assez fastidieux (en effectuant une nouvelle requête sur l'API des sites extérieurs et en remplaçant les données dans notre base de données)
+- Egalement tout pourrait être orchestré par Kubernetes qui propose les ressources plus élaborées pour déployer une application et enfin la migration de l'infrastructure vers le cloud.
+
+Les statistiques sur les accidents enregistrés peuvent solliciter les compagnies aériennes de mener les actions nécessaires pour réduire les failles et les causes d'accidents mais également trouver des solutions durables pour l'avenir.
+Les analyses sur la météo et les alertes peuvent donner la suite aux recherches plus poussées afin de comprendre comment réduire le nombre d'accidents en utilisant les prévisions, les prédictions et les alertes météo.
+
+
+Le projet a été conçu suite à la formation de data engineer proposée par "Datascientest". 
+
+Paris, France
 25.07.2023
 
 

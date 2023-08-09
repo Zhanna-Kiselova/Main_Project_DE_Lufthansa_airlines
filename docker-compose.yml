@@ -1,75 +1,21 @@
-version: "3.9"
-
+version: '3'
 services:
-
-# Launching folder_fastapi service, its container and creation of image for getting data from mongodb using fastapi endpoints
-  folder_fastapi:
-    build:
-      context: ./folder_fastapi
-      dockerfile: ./Dockerfile
-    command: python ./fast_api_endpoints.py
-    depends_on:
-      - folder_mongodb
-    volumes:
-      - ./log:/log
-    env_file: 
-      - .env
+  api:
+    build: ./api
     networks:
-      - lufthansa_network
-    container_name: container_fastapi
-    ports: 
-      - "8030:8030"
-
-
-# Launching folder_dash service, its container and creation of image for displaying the webb application
-  folder_dash:
-    build:
-      context: ./folder_dash
-      dockerfile: ./Dockerfile
-    command: python ./dash_app.py
-    depends_on:
-      - folder_fastapi, folder_mongodb #  folder_mongodb service used because certain data is got directly from mongodb and not fastapi endpoints
-    env_file: 
-      - .env
-    networks:
-      - lufthansa_network
-    container_name: container_dash
-    ports: 
-      - "8050:8050"
-
-# Network unique pour tous les tests 
-networks:
-  lufthansa_network:
-
-"""
-# Launching mongo service with its image but in our case we don't need it because the connection is done directly via Mongo cloud through fast_api_endpoint.py
-
-  mongodb:
-    image: mongo:latest
-    volumes:
-      - ./log:/log
-    env_file: 
-      - .env
-    networks:
-      - lufthansa_network
-    container_name: container_mongo
+      - lufthansa_project
+    # ports:
+    #   - "8030:8030"
+  dash:
+    build: ./dash
     ports:
-      - '27017:27017'
-
-# This is to launch API requests but we don't need it because our api requests document is linked to dahsLaunching folder_api service, its container and creation of image for api requests and inserting data into mongodb 
-
-  folder_api:
-    build:
-      context: ./folder_api
-      dockerfile: ./Dockerfile
-    command: python ./helpers.py
-    depends_on:
-      - mongodb 
-    volumes:
-      - ./log:/log
-    env_file: 
-      - .env
+      - "8050:8050" # host_port:docker_port
     networks:
-      - lufthansa_network
-    container_name: container_api
-"""
+      - lufthansa_project
+    # environment:
+    #   - FAST_API_URL=http://api:8030/
+    depends_on:
+      - api
+
+networks:
+  lufthansa_project:
