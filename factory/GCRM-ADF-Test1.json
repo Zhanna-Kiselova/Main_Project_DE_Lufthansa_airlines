@@ -1,0 +1,9 @@
+{
+	"name": "GCRM-ADF-Test1",
+	"location": "francecentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "3dbc6ddc-6df9-4d74-a010-506cd1169445",
+		"tenantId": "a289d6c2-3b1f-4bc4-8fa0-6866ff300052"
+	}
+}
