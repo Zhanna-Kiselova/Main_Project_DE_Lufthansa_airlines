@@ -187,5 +187,5 @@ Le projet a été conçu suite à la formation de data engineer proposée par "D
 Paris, France
 25.07.2023
 
-
+https://medium.com/@zhannakiselova/projet-de-cr%C3%A9ation-dapplication-dst-lufthansa-airlines-5f0d8bc227e8
 
