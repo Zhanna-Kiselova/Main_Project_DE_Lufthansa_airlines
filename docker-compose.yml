@@ -1,21 +1,42 @@
+<<<<<<< HEAD
+version: '3.8'
+=======
 version: '3'
+>>>>>>> 7003944a0243edcfa267cd9d220bb44d7ff91c81
 services:
   api:
     build: ./api
     networks:
+<<<<<<< HEAD
+      - backend
+    ports:
+      - "8030:8030"
+  dashboard:
+=======
       - lufthansa_project
     # ports:
     #   - "8030:8030"
   dash:
+>>>>>>> 7003944a0243edcfa267cd9d220bb44d7ff91c81
     build: ./dash
     ports:
       - "8050:8050" # host_port:docker_port
     networks:
+<<<<<<< HEAD
+      - backend
+    environment:
+      - FAST_API_URL=http://localhost:8030/
+=======
       - lufthansa_project
     # environment:
     #   - FAST_API_URL=http://api:8030/
+>>>>>>> 7003944a0243edcfa267cd9d220bb44d7ff91c81
     depends_on:
       - api
 
 networks:
+<<<<<<< HEAD
+  backend:
+=======
   lufthansa_project:
+>>>>>>> 7003944a0243edcfa267cd9d220bb44d7ff91c81

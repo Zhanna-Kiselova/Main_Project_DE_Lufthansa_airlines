@@ -5,6 +5,10 @@ FROM python:3.8-slim-buster
 WORKDIR /app
 
 # Copy the current directory contents into the container at /app
+<<<<<<< HEAD
+
+=======
+>>>>>>> 7003944a0243edcfa267cd9d220bb44d7ff91c81
 COPY . /app
 
 # Install any needed packages specified in requirements.txt

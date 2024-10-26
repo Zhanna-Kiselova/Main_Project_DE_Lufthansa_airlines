@@ -1,8 +1,17 @@
+<<<<<<< HEAD
+dash
+pymongo
+=======
+>>>>>>> 7003944a0243edcfa267cd9d220bb44d7ff91c81
 ansi2html==1.8.0
 certifi==2023.7.22
 charset-normalizer==3.2.0
 click==8.1.6
+<<<<<<< HEAD
+#dash==2.11.1
+=======
 dash==2.11.1
+>>>>>>> 7003944a0243edcfa267cd9d220bb44d7ff91c81
 dash-core-components==2.0.0
 dash-html-components==2.0.0
 dash-table==5.0.0

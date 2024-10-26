@@ -94,8 +94,10 @@ def get_airports_mongo_db():
 # Here below the functions to get the real-time data from API of visualcrossing website 
 def get_city_weather_api(): 
     try:
-        airports_ourairports= get_airports_mongo_db() # Using "airports_ourairports" collection from mongodb to get cities 
-        cities = airports_ourairports['municipality'].unique() # We need to precise a list of cities in the api endpoint of visualcrossing in order to get the weather
+        airports_lufthansa= get_airports_mongo_db() # Using "airports_lufthansa" collection from mongodb to get cities 
+        cities = airports_lufthansa['City Name'].unique() # We need to precise a list of cities in the api endpoint of visualcrossing in order to get the weathers
+        #airports_ourairports= get_airports_mongo_db() # Using "airports_ourairports" collection from mongodb to get cities 
+        #cities = airports_ourairports['municipality'].unique() # We need to precise a list of cities in the api endpoint of visualcrossing in order to get the weather
         df_weather= pd.DataFrame(columns = ['City', 'Description jour', 'Timezone', 'Latitude', 'Longitude', 'Date', 'Current time', 'Max_Température', 'Min_Température', 'Current temperature',
                                                 'Humidité','Precipitation', 'Neige', 'Neige_densité', 'Vent_rafale', 'Vent_vitesse','Vent_direction', 'Pression', 'Nuage', 'Visibilité',
                                                 'Solar radiation','Energy_solaire', 'Soleil_coucher', 'Alert risk','Description', 'Weather conditions', 'Weather alerts',

@@ -108,7 +108,7 @@ def get_weather():
 # API endpoint for the Dash application, getting airports_ourairports from mongodb (collection "airports_lufthansa") 
 @api.get("/get_airports_data")
 def get_airports():
-    results = airports_ourairports.find()
+    results = airports_lufthansa.find()
     records = list(results)
     return json.dumps(records, default=str)
 
